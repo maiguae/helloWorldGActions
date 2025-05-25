@@ -10,6 +10,7 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      SVC_ID: 789ac5f6-972a-4581-9dca-0a9dc0a9740b  # ← Reemplaza con tu ID real
     steps:
       - uses: actions/checkout@v3
-      - run: railway up -- --confirm
+      - run: railway up --service=${{ env.SVC_ID }} -- --confirm
