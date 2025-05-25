@@ -1,4 +1,4 @@
-name: Deploy FastAPI to Railway
+name: Deploy to Railway
 
 on:
   push:
@@ -7,25 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container: ghcr.io/railwayapp/cli:latest  # Usa la imagen oficial de Railway CLI
+    container: ghcr.io/railwayapp/cli:latest
     env:
-      SVC_ID: ${{ secrets.RAILWAY_SERVICE_ID }}  # Usa secret en lugar de valor hardcodeado
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-    
+      SVC_ID: 789ac5f6-972a-4581-9dca-0a9dc0a9740b # Cambia este valor por el ID de tu servicio en Railway
     steps:
-      - name: 🛒 Checkout code
-        uses: actions/checkout@v4  # Versión actualizada
-
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'  # Versión compatible con FastAPI
-
-      - name: 📦 Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: 🚀 Deploy to Railway
-        run: railway up --service=${{ env.SVC_ID }} --detach
-
-      - name: 🔍 Verify deployment
-        run: railway logs --service=${{ env.SVC_ID }} --tail 5
+      - uses: actions/checkout@v3
+      - run: railway up --service=${{ env.SVC_ID }} --confirm
